@@ -1,0 +1,46 @@
+name: MacCleaner
+options:
+  bundleIdPrefix: com.geltrax
+  deploymentTarget:
+    macOS: "13.0"
+
+targets:
+  MacCleaner:
+    type: application
+    platform: macOS
+    sources:
+      - path: MacCleaner
+        excludes:
+          - "**/Info.plist"
+    info:
+      path: MacCleaner/Info.plist
+      properties:
+        CFBundleDisplayName: MacCleaner
+        LSApplicationCategoryType: public.app-category.utilities
+        NSHumanReadableCopyright: Copyright © 2026 Geltrax. All rights reserved.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.geltrax.maccleaner
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        CODE_SIGN_STYLE: Automatic
+      debug:
+        ENABLE_TESTABILITY: YES
+    scheme:
+      testTargets:
+        - MacCleanerTests
+
+  MacCleanerTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: MacCleanerTests
+    dependencies:
+      - target: MacCleaner
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.geltrax.maccleaner.tests
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "13.0"

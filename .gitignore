@@ -1,0 +1,16 @@
+# Xcode
+*.xcodeproj/
+xcuserdata/
+DerivedData/
+*.xcworkspace/xcuserdata/
+
+# Build
+build/
+*.o
+*.d
+
+# macOS
+.DS_Store
+
+# XcodeGen
+# (project.yml is the source of truth; generated .xcodeproj is gitignored)
