@@ -100,8 +100,8 @@ struct ProcessTableView: View {
 
     // Split into groups: one TableColumnBuilder with all nine columns makes the
     // type checker time out, so each group is checked independently.
-    @TableColumnBuilder<ProcessSnapshot>
-    private var identityColumns: some TableColumnContent<ProcessSnapshot> {
+    @TableColumnBuilder<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>>
+    private var identityColumns: some TableColumnContent<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>> {
         TableColumn("Process", value: \.name) { process in
             HStack(spacing: 6) {
                 if process.isSelf {
@@ -132,8 +132,8 @@ struct ProcessTableView: View {
         .width(70)
     }
 
-    @TableColumnBuilder<ProcessSnapshot>
-    private var resourceColumns: some TableColumnContent<ProcessSnapshot> {
+    @TableColumnBuilder<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>>
+    private var resourceColumns: some TableColumnContent<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>> {
         TableColumn("Memory", value: \.memoryBytes) { process in
             Text(FormatUtils.byteCount(process.memoryBytes))
                 .monospacedDigit()
@@ -153,8 +153,8 @@ struct ProcessTableView: View {
         .width(90)
     }
 
-    @TableColumnBuilder<ProcessSnapshot>
-    private var detailColumns: some TableColumnContent<ProcessSnapshot> {
+    @TableColumnBuilder<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>>
+    private var detailColumns: some TableColumnContent<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>> {
         TableColumn("User", value: \.username) { process in
             Text(process.username ?? FormatUtils.unavailable)
                 .foregroundColor(process.username == nil ? .tertiary : .primary)
