@@ -35,21 +35,21 @@ struct ProcessDetailView: View {
                     .lineLimit(1)
                 Text("PID \(process.pid)")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(.secondary)
                     .monospacedDigit()
             }
             Spacer()
             if !process.canTerminate {
                 Label("Protected", systemImage: "lock.fill")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(.secondary)
                     .help(protectedReason)
             }
             Button {
                 onClose()
             } label: {
                 Image(systemName: "xmark.circle.fill")
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(.secondary)
             }
             .buttonStyle(.plain)
             .help("Close details (Esc)")
@@ -100,7 +100,7 @@ struct ProcessDetailView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Command Line")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundColor(.secondary)
                     if let commandLine = details.commandLine, !commandLine.isEmpty {
                         Text(commandLine)
                             .font(.caption.monospaced())
@@ -112,7 +112,7 @@ struct ProcessDetailView: View {
                     } else {
                         Text("Unavailable — the OS did not expose it.")
                             .font(.caption)
-                            .foregroundStyle(.tertiary)
+                            .foregroundColor(.tertiary)
                     }
                 }
             }
@@ -124,18 +124,18 @@ struct ProcessDetailView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text("Parent")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(.secondary)
                 if let parent = details.parent {
                     processLink(parent)
                 } else {
-                    Text("Unavailable").font(.caption).foregroundStyle(.tertiary)
+                    Text("Unavailable").font(.caption).foregroundColor(.tertiary)
                 }
                 Text("Children (\(details.children.count))")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(.secondary)
                     .padding(.top, 4)
                 if details.children.isEmpty {
-                    Text("None").font(.caption).foregroundStyle(.tertiary)
+                    Text("None").font(.caption).foregroundColor(.tertiary)
                 } else {
                     ForEach(details.children.prefix(20)) { child in
                         processLink(child)
@@ -143,7 +143,7 @@ struct ProcessDetailView: View {
                     if details.children.count > 20 {
                         Text("…and \(details.children.count - 20) more")
                             .font(.caption)
-                            .foregroundStyle(.tertiary)
+                            .foregroundColor(.tertiary)
                     }
                 }
             }
@@ -164,7 +164,7 @@ struct ProcessDetailView: View {
             if !process.canTerminate {
                 Text(protectedReason)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
             }
         }
@@ -177,7 +177,7 @@ struct ProcessDetailView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title.uppercased())
                 .font(.caption.bold())
-                .foregroundStyle(.secondary)
+                .foregroundColor(.secondary)
             content()
         }
     }
@@ -191,7 +191,7 @@ struct ProcessDetailView: View {
                 Spacer()
                 Text("PID \(process.pid)")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundColor(.secondary)
                     .monospacedDigit()
             }
             .contentShape(Rectangle())
@@ -225,7 +225,7 @@ private struct DetailRow: View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text(label)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundColor(.secondary)
                 .frame(width: 92, alignment: .trailing)
             Text(value)
                 .font(.subheadline)

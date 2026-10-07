@@ -10,7 +10,7 @@ struct TopMemoryView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Top Memory".uppercased())
                 .font(.caption.bold())
-                .foregroundStyle(.secondary)
+                .foregroundColor(.secondary)
             HStack(spacing: 8) {
                 ForEach(Array(processes.enumerated()), id: \.element.pid) { index, process in
                     Button {
@@ -19,7 +19,7 @@ struct TopMemoryView: View {
                         HStack(spacing: 8) {
                             Text("\(index + 1)")
                                 .font(.caption.bold())
-                                .foregroundStyle(.tertiary)
+                                .foregroundColor(.tertiary)
                                 .frame(width: 14, alignment: .trailing)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(process.name)
@@ -27,7 +27,7 @@ struct TopMemoryView: View {
                                     .lineLimit(1)
                                 Text(FormatUtils.byteCount(process.memoryBytes))
                                     .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundColor(.secondary)
                                     .monospacedDigit()
                             }
                         }

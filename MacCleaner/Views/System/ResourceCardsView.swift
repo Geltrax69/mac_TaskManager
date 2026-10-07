@@ -49,7 +49,7 @@ private struct Card<Content: View>: View {
         VStack(alignment: .leading, spacing: 8) {
             Label(title.uppercased(), systemImage: icon)
                 .font(.caption.bold())
-                .foregroundStyle(.secondary)
+                .foregroundColor(.secondary)
                 .labelStyle(.titleAndIcon)
             content
         }
@@ -137,7 +137,7 @@ struct ResourceCardsView: View {
                     Text("\(snapshot.totalCount)")
                         .font(.title3.bold())
                         .monospacedDigit()
-                    + Text(" running").font(.subheadline).foregroundStyle(.secondary)
+                    + Text(" running").font(.subheadline).foregroundColor(.secondary)
                     MeterBar(fraction: nil)
                     footnote("\(snapshot.applicationCount) applications · \(snapshot.backgroundCount) background")
                 } else {
@@ -153,7 +153,7 @@ struct ResourceCardsView: View {
     private func footnote(_ text: String) -> some View {
         Text(text)
             .font(.caption)
-            .foregroundStyle(.secondary)
+            .foregroundColor(.secondary)
             .monospacedDigit()
             .lineLimit(1)
     }

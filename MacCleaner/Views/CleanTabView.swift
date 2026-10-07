@@ -7,11 +7,11 @@ struct CleanTabView: View {
         VStack(spacing: 12) {
             Image(systemName: "sparkles")
                 .font(.system(size: 44, weight: .light))
-                .foregroundStyle(.secondary)
+                .foregroundColor(.secondary)
             Text("Clean")
                 .font(.title2.bold())
             Text("Storage cleaning tools will live here.")
-                .foregroundStyle(.secondary)
+                .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

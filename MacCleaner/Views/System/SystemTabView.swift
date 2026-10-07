@@ -36,7 +36,7 @@ struct SystemTabView: View {
                                 ProgressView()
                                 Text("Loading details…")
                                     .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundColor(.secondary)
                             }
                         }
                     }
