@@ -23,6 +23,8 @@ jobs:
           -scheme MacCleaner
           -destination 'platform=macOS'
           -configuration Debug
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGN_IDENTITY=""
           build
 
       - name: Test
@@ -31,4 +33,6 @@ jobs:
           -scheme MacCleaner
           -destination 'platform=macOS'
           -configuration Debug
+          CODE_SIGNING_ALLOWED=NO
+          CODE_SIGN_IDENTITY=""
           test
