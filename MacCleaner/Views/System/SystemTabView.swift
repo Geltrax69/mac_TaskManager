@@ -101,14 +101,16 @@ struct SystemTabView: View {
             }
         }
         // Operation failures: permission, process vanished, etc.
+        // Note: the presenting: overload needs Identifiable data, which String
+        // isn't — so this uses the plain isPresented form and reads the
+        // message from the view model inside the message closure.
         .alert(
             "Unable to complete action",
-            isPresented: actionErrorPresented,
-            presenting: viewModel.actionErrorMessage
-        ) { _ in
+            isPresented: actionErrorPresented
+        ) {
             Button("OK", role: .cancel) {}
-        } message: { message in
-            Text(message)
+        } message: {
+            Text(viewModel.actionErrorMessage ?? "")
         }
     }
 
