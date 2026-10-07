@@ -1,5 +1,15 @@
 import SwiftUI
 
+// TableColumn's `value:` sorting needs a non-optional Comparable key path,
+// so these proxies stand in for the optional model fields (nils sort last
+// when ascending, first when descending — same as Finder's behavior).
+private extension ProcessSnapshot {
+    var cpuPercentForSort: Double { cpuPercent ?? -1 }
+    var memoryPercentForSort: Double { memoryPercent ?? -1 }
+    var usernameForSort: String { username ?? "" }
+    var executablePathForSort: String { executablePath ?? "" }
+}
+
 struct ProcessTableView: View {
     @ObservedObject var viewModel: SystemViewModel
     @FocusState.Binding var searchFocused: Bool
@@ -125,7 +135,7 @@ struct ProcessTableView: View {
         }
         .width(70)
 
-        TableColumn("CPU %", value: \ProcessSnapshot.cpuPercent) { process in
+        TableColumn("CPU %", value: \ProcessSnapshot.cpuPercentForSort) { process in
             Text(FormatUtils.percent(process.cpuPercent))
                 .monospacedDigit()
         }
@@ -140,7 +150,7 @@ struct ProcessTableView: View {
         }
         .width(90)
 
-        TableColumn("Mem %", value: \ProcessSnapshot.memoryPercent) { process in
+        TableColumn("Mem %", value: \ProcessSnapshot.memoryPercentForSort) { process in
             Text(FormatUtils.percent(process.memoryPercent))
                 .monospacedDigit()
         }
@@ -155,13 +165,13 @@ struct ProcessTableView: View {
 
     @TableColumnBuilder<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>>
     private var detailColumns: some TableColumnContent<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>> {
-        TableColumn("User", value: \ProcessSnapshot.username) { process in
+        TableColumn("User", value: \ProcessSnapshot.usernameForSort) { process in
             Text(process.username ?? FormatUtils.unavailable)
                 .foregroundColor(process.username == nil ? .tertiaryLabel : .primary)
         }
         .width(110)
 
-        TableColumn("Path", value: \ProcessSnapshot.executablePath) { process in
+        TableColumn("Path", value: \ProcessSnapshot.executablePathForSort) { process in
             Text(process.executablePath ?? FormatUtils.unavailable)
                 .foregroundColor(.secondary)
                 .lineLimit(1)
