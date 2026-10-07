@@ -19,7 +19,7 @@ struct TopMemoryView: View {
                         HStack(spacing: 8) {
                             Text("\(index + 1)")
                                 .font(.caption.bold())
-                                .foregroundColor(.tertiary)
+                                .foregroundColor(.tertiaryLabel)
                                 .frame(width: 14, alignment: .trailing)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(process.name)

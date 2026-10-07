@@ -112,7 +112,7 @@ struct ProcessDetailView: View {
                     } else {
                         Text("Unavailable — the OS did not expose it.")
                             .font(.caption)
-                            .foregroundColor(.tertiary)
+                            .foregroundColor(.tertiaryLabel)
                     }
                 }
             }
@@ -128,14 +128,14 @@ struct ProcessDetailView: View {
                 if let parent = details.parent {
                     processLink(parent)
                 } else {
-                    Text("Unavailable").font(.caption).foregroundColor(.tertiary)
+                    Text("Unavailable").font(.caption).foregroundColor(.tertiaryLabel)
                 }
                 Text("Children (\(details.children.count))")
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .padding(.top, 4)
                 if details.children.isEmpty {
-                    Text("None").font(.caption).foregroundColor(.tertiary)
+                    Text("None").font(.caption).foregroundColor(.tertiaryLabel)
                 } else {
                     ForEach(details.children.prefix(20)) { child in
                         processLink(child)
@@ -143,7 +143,7 @@ struct ProcessDetailView: View {
                     if details.children.count > 20 {
                         Text("…and \(details.children.count - 20) more")
                             .font(.caption)
-                            .foregroundColor(.tertiary)
+                            .foregroundColor(.tertiaryLabel)
                     }
                 }
             }

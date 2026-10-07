@@ -51,7 +51,7 @@ struct ProcessTableView: View {
             if let updated = viewModel.lastUpdated {
                 Text("Updated \(updated, style: .time)")
                     .font(.caption)
-                    .foregroundColor(.tertiary)
+                    .foregroundColor(.tertiaryLabel)
                     .monospacedDigit()
             }
             Text("\(viewModel.visibleProcesses.count) processes")
@@ -102,7 +102,7 @@ struct ProcessTableView: View {
     // type checker time out, so each group is checked independently.
     @TableColumnBuilder<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>>
     private var identityColumns: some TableColumnContent<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>> {
-        TableColumn("Process", value: \.name) { process in
+        TableColumn("Process", value: \ProcessSnapshot.name) { process in
             HStack(spacing: 6) {
                 if process.isSelf {
                     Image(systemName: "app.badge.checkmark")
@@ -119,13 +119,13 @@ struct ProcessTableView: View {
         }
         .width(min: 140, ideal: 200)
 
-        TableColumn("PID", value: \.pid) { process in
+        TableColumn("PID", value: \ProcessSnapshot.pid) { process in
             Text(String(process.pid))
                 .monospacedDigit()
         }
         .width(70)
 
-        TableColumn("CPU %", value: \.cpuPercent) { process in
+        TableColumn("CPU %", value: \ProcessSnapshot.cpuPercent) { process in
             Text(FormatUtils.percent(process.cpuPercent))
                 .monospacedDigit()
         }
@@ -134,19 +134,19 @@ struct ProcessTableView: View {
 
     @TableColumnBuilder<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>>
     private var resourceColumns: some TableColumnContent<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>> {
-        TableColumn("Memory", value: \.memoryBytes) { process in
+        TableColumn("Memory", value: \ProcessSnapshot.memoryBytes) { process in
             Text(FormatUtils.byteCount(process.memoryBytes))
                 .monospacedDigit()
         }
         .width(90)
 
-        TableColumn("Mem %", value: \.memoryPercent) { process in
+        TableColumn("Mem %", value: \ProcessSnapshot.memoryPercent) { process in
             Text(FormatUtils.percent(process.memoryPercent))
                 .monospacedDigit()
         }
         .width(70)
 
-        TableColumn("Status", value: \.status.rawValue) { process in
+        TableColumn("Status", value: \ProcessSnapshot.status.rawValue) { process in
             Text(process.status.rawValue)
                 .foregroundColor(process.status == .zombie ? .red : .primary)
         }
@@ -155,13 +155,13 @@ struct ProcessTableView: View {
 
     @TableColumnBuilder<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>>
     private var detailColumns: some TableColumnContent<ProcessSnapshot, KeyPathComparator<ProcessSnapshot>> {
-        TableColumn("User", value: \.username) { process in
+        TableColumn("User", value: \ProcessSnapshot.username) { process in
             Text(process.username ?? FormatUtils.unavailable)
-                .foregroundColor(process.username == nil ? .tertiary : .primary)
+                .foregroundColor(process.username == nil ? .tertiaryLabel : .primary)
         }
         .width(110)
 
-        TableColumn("Path", value: \.executablePath) { process in
+        TableColumn("Path", value: \ProcessSnapshot.executablePath) { process in
             Text(process.executablePath ?? FormatUtils.unavailable)
                 .foregroundColor(.secondary)
                 .lineLimit(1)
