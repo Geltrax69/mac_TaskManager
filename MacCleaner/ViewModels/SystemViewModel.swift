@@ -184,7 +184,10 @@ final class SystemViewModel: ObservableObject {
     /// Polls `kill(pid, 0)` until the process is gone or the timeout elapses.
     /// `kill(pid, 0)` succeeds for zombies too, so a reaped-but-unreaped
     /// process correctly reports as "still present".
-    private static func waitForExit(pid: pid_t, timeout: TimeInterval) -> Bool {
+    // nonisolated: this spins on Thread.sleep for up to `timeout` seconds and must
+    // not hop onto the MainActor (the class is @MainActor, so without this the
+    // call from Task.detached requires await and would block the main thread).
+    private static nonisolated func waitForExit(pid: pid_t, timeout: TimeInterval) -> Bool {
         let deadline = Date().addingTimeInterval(timeout)
         while Date() < deadline {
             if kill(pid, 0) != 0, errno == ESRCH { return true }

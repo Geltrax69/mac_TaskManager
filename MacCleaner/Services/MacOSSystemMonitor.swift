@@ -102,7 +102,7 @@ final class MacOSSystemMonitor: SystemMonitor, @unchecked Sendable {
                 executablePath: path,
                 username: username,
                 uid: uid,
-                status: Self.status(for: kp.kp_proc.p_stat),
+                status: Self.status(for: Int32(kp.kp_proc.p_stat)), // p_stat is CChar (Int8) in the SDK
                 cpuPercent: cpuPercent,
                 memoryBytes: memoryBytes,
                 memoryPercent: totalRAM > 0 ? Double(memoryBytes) / Double(totalRAM) * 100 : nil,
@@ -411,10 +411,17 @@ final class MacOSSystemMonitor: SystemMonitor, @unchecked Sendable {
     }
 
     static func architecture(pid: pid_t) -> String? {
-        var info = proc_archinfo()
-        let expected = Int32(MemoryLayout<proc_archinfo>.size)
-        guard proc_pidinfo(pid, PROC_PIDARCHINFO, 0, &info, expected) == expected else { return nil }
-        switch info.pti_cputype {
+        // proc_archinfo / PROC_PIDARCHINFO are not exposed to Swift by the SDK,
+        // so use the sysctl.proc_cputype node instead: it takes the target pid
+        // as the "new" buffer and returns the process's cpu_type as an Int32.
+        var cputype: Int32 = 0
+        var len = MemoryLayout<Int32>.size
+        var target = pid
+        let ok = "sysctl.proc_cputype".withCString { name in
+            sysctlbyname(name, &cputype, &len, &target, MemoryLayout<pid_t>.size)
+        }
+        guard ok == 0 else { return nil }
+        switch cputype {
         case CPU_TYPE_ARM64: return "arm64"
         case CPU_TYPE_X86_64: return "x86_64"
         case CPU_TYPE_ARM: return "arm"
