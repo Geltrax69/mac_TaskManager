@@ -18,14 +18,28 @@ jobs:
         run: xcodegen generate
 
       - name: Build
-        run: >
-          xcodebuild
-          -scheme MacCleaner
-          -destination 'platform=macOS'
-          -configuration Debug
-          CODE_SIGNING_ALLOWED=NO
-          CODE_SIGN_IDENTITY=""
-          build
+        id: build
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -scheme MacCleaner \
+            -destination 'platform=macOS' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build 2>&1 | tee /tmp/build.log
+
+      - name: Surface build errors
+        if: steps.build.outcome == 'failure'
+        run: |
+          {
+            echo "## Build errors"
+            echo '```'
+            grep -E "error:" /tmp/build.log | sort -u | head -20
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
 
       - name: Test
         run: >
