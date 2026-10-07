@@ -12,6 +12,9 @@ enum FormatUtils {
 
     /// e.g. "1.82 GB", "412 MB", "96 KB".
     static func byteCount(_ bytes: UInt64) -> String {
+        // ByteCountFormatter renders 0 as "Zero KB", which looks odd in a table
+        // column — spell it out instead.
+        guard bytes > 0 else { return "0 bytes" }
         // ByteCountFormatter takes Int64; clamp to avoid overflow on absurd values.
         let clamped = bytes > UInt64(Int64.max) ? Int64.max : Int64(bytes)
         return byteFormatter.string(fromByteCount: clamped)
